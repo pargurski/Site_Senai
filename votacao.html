@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Votação - Professor Nivaldo</title>
+		<style>
+				body {
+						background-color: #1a1a1a;
+						color: #fff;
+						font-family: Arial, sans-serif;
+						text-align: center;
+						padding: 20px;
+				}
+
+				.container-votacao {
+						background-color: #2a2a2a;
+						border: 3px solid #dc143c;
+						padding: 30px;
+						margin: 20px auto;
+						max-width: 600px;
+				}
+
+				h1 {
+						color: #ffd700;
+						background-color: #dc143c;
+						padding: 15px;
+						border: 2px solid #ffd700;
+				}
+
+				h2 {
+						color: #ffd700;
+						border-bottom: 2px solid #dc143c;
+						padding-bottom: 10px;
+				}
+
+				.pergunta {
+						background-color: #1a1a1a;
+						border: 2px solid #ffd700;
+						padding: 20px;
+						margin: 20px 0;
+						font-size: 1.2em;
+						font-weight: bold;
+				}
+
+				.opcoes {
+						margin: 30px 0;
+				}
+
+				.opcao {
+						margin: 15px 0;
+						padding: 15px;
+						background-color: #1a1a1a;
+						border: 2px solid #dc143c;
+						font-size: 1.1em;
+						font-weight: bold;
+				}
+
+				.opcao:hover {
+						background-color: #dc143c;
+						color: #ffd700;
+				}
+
+				input[type="radio"] {
+						width: 20px;
+						height: 20px;
+						margin-right: 10px;
+						cursor: pointer;
+				}
+
+				.botao-votar {
+						background-color: #dc143c;
+						color: #ffd700;
+						padding: 15px 40px;
+						font-size: 1.1em;
+						font-weight: bold;
+						border: 2px solid #ffd700;
+						cursor: pointer;
+						margin: 20px 0;
+				}
+
+				.botao-votar:hover {
+						background-color: #ffd700;
+						color: #dc143c;
+				}
+
+				.resultado {
+						background-color: #1a1a1a;
+						border: 2px solid #dc143c;
+						padding: 20px;
+						margin-top: 30px;
+				}
+
+				.resultado-item {
+						margin: 15px 0;
+						text-align: left;
+						padding: 10px;
+						background-color: #2a2a2a;
+						border-left: 3px solid #dc143c;
+				}
+
+				.resultado-numero {
+						color: #ffd700;
+						font-size: 1.5em;
+						font-weight: bold;
+				}
+
+				.barra {
+						background-color: #000;
+						border: 1px solid #dc143c;
+						height: 25px;
+						margin-top: 5px;
+				}
+
+				.barra-sim {
+						background-color: #dc143c;
+						height: 100%;
+						width: 0%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						color: #ffd700;
+						font-weight: bold;
+				}
+
+				.barra-nao {
+						background-color: #555;
+						height: 100%;
+						width: 0%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						color: #fff;
+						font-weight: bold;
+				}
+
+				.voltar-link {
+						display: inline-block;
+						margin-top: 20px;
+						padding: 10px 30px;
+						background-color: #dc143c;
+						color: #ffd700;
+						text-decoration: none;
+						border: 2px solid #ffd700;
+						font-weight: bold;
+				}
+
+				.voltar-link:hover {
+						background-color: #ffd700;
+						color: #dc143c;
+				}
+
+				.logo {
+						width: 100px;
+						border: 2px solid #dc143c;
+						margin-bottom: 15px;
+				}
+		</style>
+</head>
+<body>
+		<div class="container-votacao">
+				<h1> VOTAÇÃO IMPORTANTE </h1>
+
+				<img src="imgsite_senai/Nivaldo.png" alt="Nivaldo" class="logo">
+
+				<div class="pergunta">
+						<p>O professor Nivaldo deve trocar a camisa do Chelsea pela do Manchester United no GitHub?</p>
+				</div>
+
+				<form id="form-voto">
+						<div class="opcoes">
+								<label class="opcao">
+										<input type="radio" name="voto" value="sim" required>
+										✓ SIM
+								</label>
+
+								<label class="opcao">
+										<input type="radio" name="voto" value="nao" required>
+										✗ NÃO
+								</label>
+						</div>
+
+						<button type="submit" class="botao-votar"> VOTAR </button>
+				</form>
+
+				<div class="resultado">
+						<h2>RESULTADO DA VOTAÇÃO</h2>
+
+						<div class="resultado-item">
+								<p><span class="resultado-numero" id="votos-sim">5</span> votos para SIM</p>
+								<div class="barra">
+										<div class="barra-sim" id="barra-sim" style="width: 50%;">50%</div>
+								</div>
+						</div>
+
+						<div class="resultado-item">
+								<p><span class="resultado-numero" id="votos-nao">5</span> votos para NÃO</p>
+								<div class="barra">
+										<div class="barra-nao" id="barra-nao" style="width: 50%;">50%</div>
+								</div>
+						</div>
+
+						<p style="margin-top: 15px; color: #ffd700;">
+								<strong>Total de votos: <span id="total-votos">10</span></strong>
+						</p>
+				</div>
+
+				<a href="index.html" class="voltar-link">← Voltar para Flamengo</a>
+		</div>
+
+		<script>
+			function carregarVotos() {
+				let votosSim = localStorage.getItem('votos-sim');
+				let votosNao = localStorage.getItem('votos-nao');
+
+				votosSim = votosSim ? parseInt(votosSim) : 5;
+				votosNao = votosNao ? parseInt(votosNao) : 5;
+
+				atualizarResultados(votosSim, votosNao);
+			}
+
+			function atualizarResultados(votosSim, votosNao) {
+				const totalVotos = votosSim + votosNao;
+				const percentualSim = totalVotos > 0 ? (votosSim / totalVotos * 100).toFixed(0) : 0;
+				const percentualNao = totalVotos > 0 ? (votosNao / totalVotos * 100).toFixed(0) : 0;
+
+				document.getElementById('votos-sim').textContent = votosSim;
+				document.getElementById('votos-nao').textContent = votosNao;
+				document.getElementById('total-votos').textContent = totalVotos;
+				document.getElementById('barra-sim').style.width = percentualSim + '%';
+				document.getElementById('barra-sim').textContent = percentualSim + '%';
+				document.getElementById('barra-nao').style.width = percentualNao + '%';
+				document.getElementById('barra-nao').textContent = percentualNao + '%';
+			}
+
+			document.getElementById('form-voto').addEventListener('submit', function(e) {
+				e.preventDefault();
+
+				const voto = document.querySelector('input[name="voto"]:checked').value;
+
+				let votosSim = localStorage.getItem('votos-sim');
+				let votosNao = localStorage.getItem('votos-nao');
+
+				votosSim = votosSim ? parseInt(votosSim) : 5;
+				votosNao = votosNao ? parseInt(votosNao) : 5;
+
+				if (voto === 'sim') {
+					votosSim++;
+				} else {
+					votosNao++;
+				}
+
+				localStorage.setItem('votos-sim', votosSim);
+				localStorage.setItem('votos-nao', votosNao);
+
+				atualizarResultados(votosSim, votosNao);
+
+				document.getElementById('form-voto').reset();
+			});
+
+			window.addEventListener('load', carregarVotos);
+		</script>
+</body>
+</html>
